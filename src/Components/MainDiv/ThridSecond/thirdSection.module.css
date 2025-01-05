@@ -1,0 +1,23 @@
+#main{
+ width: 100%;
+ /* background-color: blue;  */
+ height: 500px;
+ border-radius: 20px;
+ overflow-y: scroll;
+ display: flex;
+ flex-direction: row;
+ flex-wrap: wrap;
+ align-items: center;
+ justify-content: space-evenly;
+ margin-block: 20px;
+ padding: 20px;
+}
+#main section{
+ width: 200px;
+ height: 200px;
+ background-color: red;
+ margin: 15px;
+padding: 20px;
+border-radius: 20px;
+background-color: rgba(128, 128, 128, 0.101);
+}

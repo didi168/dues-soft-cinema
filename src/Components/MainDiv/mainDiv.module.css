@@ -1,0 +1,10 @@
+#mainDiv{
+ width: 80%;
+ height: 100%;
+ margin: 0 auto;
+ padding: 10px 20px;
+ display: flex;
+ flex-direction: column;
+ justify-content: space-evenly;
+ align-items: flex-start;
+}
