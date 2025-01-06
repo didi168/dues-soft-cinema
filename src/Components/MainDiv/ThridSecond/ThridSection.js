@@ -5,18 +5,16 @@ import styles from "./thirdSection.module.css";
 function ThirdSection() {
   const TMDB_API_KEY = "fb2e806bcdf39297b44b6a06de5b1f6f";
 
-  const [movies, setMovies] = useState([]); // All loaded movies
-  const [page, setPage] = useState(1); // Current page for infinite scroll
-  const [loading, setLoading] = useState(false); // Loading state
-  const [hasMore, setHasMore] = useState(true); // Whether more movies are available
+  const [movies, setMovies] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    // Function to fetch movies from a random page
     const fetchMovies = async () => {
-      if (loading) return; // Prevent multiple simultaneous calls
-      setLoading(true);
+      if (loading) return;
 
-      // Generate a random page number between 1 and 500 (adjust according to your needs)
+      setLoading(true);
       const randomPage = Math.floor(Math.random() * 500) + 1;
 
       try {
@@ -24,9 +22,10 @@ function ThirdSection() {
           `https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_API_KEY}&language=en-US&page=${randomPage}`
         );
 
-        const movieData = response.data.results;
+        console.log("API response:", response.data);
 
-        // Fetch trailers for each movie
+        const movieData = response.data.results || [];
+
         const moviesWithTrailers = await Promise.all(
           movieData.map(async (movie) => {
             const trailerResponse = await axios.get(
@@ -40,7 +39,9 @@ function ThirdSection() {
               id: movie.id,
               title: movie.title,
               rating: movie.vote_average,
-              poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+              poster: movie.poster_path
+                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                : null,
               trailer: trailer
                 ? `https://www.youtube.com/watch?v=${trailer.key}`
                 : null,
@@ -48,26 +49,24 @@ function ThirdSection() {
           })
         );
 
-        // Shuffle the movies array randomly
-        const shuffledMovies = moviesWithTrailers.sort(() => Math.random() - 0.5);
+        console.log("Movies with trailers:", moviesWithTrailers);
 
+        const shuffledMovies = moviesWithTrailers.sort(() => Math.random() - 0.5);
         setMovies((prevMovies) => [...prevMovies, ...shuffledMovies]);
 
-        // If there are no more pages, set `hasMore` to false
         if (response.data.page >= response.data.total_pages) {
           setHasMore(false);
         }
       } catch (error) {
-        console.error("Error fetching movies:", error);
+        console.error("Error fetching movies:", error.response?.data || error.message);
       } finally {
-        setLoading(false); // Turn off loading state
+        setLoading(false);
       }
     };
 
     fetchMovies();
-  }, [page]); // Fetch movies when page changes
+  }, [page]);
 
-  // Scroll event listener to detect when user scrolls near the bottom
   useEffect(() => {
     const handleScroll = () => {
       if (
@@ -75,35 +74,45 @@ function ThirdSection() {
         document.documentElement.offsetHeight
       ) {
         if (!loading && hasMore) {
-          setPage((prevPage) => prevPage + 1); // Load next random page
+          setPage((prevPage) => prevPage + 1);
         }
       }
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll); // Cleanup listener
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [loading, hasMore]);
 
   return (
     <div id={styles.main}>
       <h1>Popular Movies</h1>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-        {movies.map((movie) => (
-          <div key={movie.id} style={{ width: "200px" }}>
-            <img
-              src={movie.poster}
-              alt={movie.title}
-              style={{ width: "100%", borderRadius: "10px" }}
-            />
-            <h3>{movie.title}</h3>
-            <p>Rating: {movie.rating}</p>
-            {movie.trailer && (
-              <a href={movie.trailer} target="_blank" rel="noopener noreferrer">
-                Watch Trailer
-              </a>
-            )}
-          </div>
-        ))}
+        {movies.length > 0 ? (
+          movies.map((movie) => (
+            <div key={movie.id} style={{ width: "200px" }}>
+              {movie.poster ? (
+                <img
+                  src={movie.poster}
+                  alt={movie.title}
+                  style={{ width: "100%", borderRadius: "10px" }}
+                />
+              ) : (
+                <p>No image available</p>
+              )}
+              <h3>{movie.title || "Untitled"}</h3>
+              <p>Rating: {movie.rating || "N/A"}</p>
+              {movie.trailer ? (
+                <a href={movie.trailer} target="_blank" rel="noopener noreferrer">
+                  Watch Trailer
+                </a>
+              ) : (
+                <p>No trailer available</p>
+              )}
+            </div>
+          ))
+        ) : (
+          <p>No movies available.</p>
+        )}
       </div>
       {loading && <p>Loading more movies...</p>}
       {!hasMore && <p>No more movies to load.</p>}
