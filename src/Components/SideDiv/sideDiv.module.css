@@ -54,3 +54,8 @@ padding:5px;
 /* background-color: blue; */
 }
 
+@media (max-width: 900px){
+ #sideDiv{
+  display: none;
+ }
+}

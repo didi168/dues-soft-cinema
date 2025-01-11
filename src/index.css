@@ -1,7 +1,10 @@
 body {
   font-size: 100%;
-  margin: 0;
+  margin: 0 auto;
+  padding: 0 auto;
+  width: 100%;
   font-family:sans-serif;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* background-color: black; */
@@ -10,4 +13,13 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@media (max-width:900px){
+ body{
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden;
+} 
 }

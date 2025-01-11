@@ -10,6 +10,9 @@
  justify-content: space-between;
 
 }
+#heading{
+ display: none;
+}
 .icons{
  font-size: 130%;
  font-weight: lighter;
@@ -58,4 +61,34 @@
  align-items: center;
  justify-content: right;
  /* background-color: purple; */
+}
+
+@media (max-width: 900px){
+ #main{
+overflow-x: hidden;
+ /* background-color: red; */
+ width: 100%;
+display: flex;
+align-items: center;
+justify-content: space-evenly;
+padding: 0 auto;
+padding-inline: 20px 10px;
+margin: 0 auto;
+background-color: red;
+
+ }
+
+ #main .search{
+  display: none;
+ }
+ #heading{
+  display: block;
+  font-size: 130%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ }
+ #main .navigation{
+  display: none;
+ }
 }

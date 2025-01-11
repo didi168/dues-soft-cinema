@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./firstSection.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 function FirstSection() {
   const TMDB_API_KEY = "fb2e806bcdf39297b44b6a06de5b1f6f";
@@ -25,7 +27,7 @@ function FirstSection() {
         setError(true); // Handle fetch error
       }
     };
-
+    // const releaseYear = randomTvSeries.release_date ? randomTvSeries.release_date.split("-")[0] : "N/A";
     fetchRandomTvSeries();
   }, [TMDB_API_KEY]); // Include TMDB_API_KEY in dependency array for clarity
 
@@ -48,19 +50,18 @@ function FirstSection() {
         }}
       >
         {randomTvSeries ? (
-          <>
-            <h1>{randomTvSeries.name}</h1>
-            <h3>{randomTvSeries.tagline || "No tagline available"}</h3>
+          <div id="innerDiv">
+            <h1>{randomTvSeries.name + " "}</h1>
             <p className={styles.rating}>
-              Rating: {randomTvSeries.vote_average || "N/A"}
+            <FontAwesomeIcon icon={faStar} /> {randomTvSeries.vote_average || "  "}
             </p>
             <span className={styles.secondSpan}>
               <button id={styles.playBtn}>Play</button>
               <button id={styles.downloadBtn}>Download</button>
             </span>
-          </>
+          </div>
         ) : (
-          <p>Loading TV series...</p>
+          <p className="loadingText">Loading TV series...</p>
         )}
       </section>
     </div>
