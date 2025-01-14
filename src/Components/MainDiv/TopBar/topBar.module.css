@@ -10,6 +10,12 @@
  justify-content: space-between;
 
 }
+#logo{
+ width: 35px;
+ margin: 0;
+ padding: 0;
+ height: auto;
+}
 #heading{
  display: none;
 }
@@ -78,15 +84,18 @@ background-color: red;
 
  }
 
+
  #main .search{
   display: none;
  }
  #heading{
   display: block;
-  font-size: 130%;
+  font-size: 120%;
   display: flex;
+  /* margin-left: -15%; */
   align-items: center;
-  justify-content: center;
+  justify-content: left;
+  gap: 5px;
  }
  #main .navigation{
   display: none;
