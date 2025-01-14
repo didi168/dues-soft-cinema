@@ -8,6 +8,7 @@ function App() {
     <div className={styles.App}>
      {SideDiv()} 
       {MainDiv()}
+      
     </div>
   );
 }
